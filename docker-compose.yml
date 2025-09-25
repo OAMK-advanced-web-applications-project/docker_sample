@@ -1,0 +1,104 @@
+# Docker Compose Configuration for Full Stack Application
+# Frontend (React/Vite) + Backend (Express/Node.js) + Database (PostgreSQL)
+#
+# Basic Commands:
+# 
+# Build and start all services:
+# docker-compose up --build
+#
+# Start services in background:
+# docker-compose up -d
+#
+# Stop all services:
+# docker-compose down
+#
+# Stop and remove volumes:
+# docker-compose down -v
+#
+# Build specific service:
+# docker-compose build backend
+# docker-compose build frontend
+#
+# View running services:
+# docker-compose ps
+#
+# View logs:
+# docker-compose logs -f
+#
+# Access points:
+# Frontend: http://localhost:${FRONTEND_EXPOSED_PORT}
+# Backend API: http://localhost:${BACKEND_EXPOSED_PORT}
+# Database: localhost:${DB_EXPOSED_PORT}
+#
+# Note: Docker Compose automatically loads .env file for variable substitution
+# Copy .env.docker to .env or create .env with required variables
+
+services:
+  # PostgreSQL Database
+  database:
+    image: postgres:17
+    container_name: docker_sample_postgres
+    env_file:
+      - .env
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${DB_EXPOSED_PORT}:${DB_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./api/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Backend API
+  backend:
+    build: ./api
+    container_name: docker_sample_api
+    env_file:
+      - .env
+    ports:
+      - "${BACKEND_EXPOSED_PORT}:${PORT}"
+    volumes:
+      - ./api:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=1000
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:${PORT}/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build: .
+    container_name: docker_sample_vite
+    env_file:
+      - .env
+    ports:
+      - "${FRONTEND_EXPOSED_PORT}:${FRONTEND_PORT}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# Named volumes for data persistence
+volumes:
+  postgres_data:
