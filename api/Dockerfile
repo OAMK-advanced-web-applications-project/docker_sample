@@ -11,7 +11,7 @@
 #
 # Access the API at: http://localhost:3000
 
-# Use Node.js 22 as the base image
+# Use Node.js 24 as the base image
 FROM node:24
 
 # Set the working directory inside the container
@@ -26,7 +26,7 @@ RUN apt-get update \
 COPY package*.json ./   
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .
@@ -34,5 +34,5 @@ COPY . .
 # Expose port 3000 to the outside world
 EXPOSE 3000
 
-# Start the application using npm run devStart which starts it with nodemon
+# Start the application using npm run dev which starts it with nodemon
 CMD ["npm", "run", "dev"]
