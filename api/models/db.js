@@ -1,6 +1,5 @@
 import pkg from 'pg'
 
-const environment = process.env.NODE_ENV || 'development'
 const { Pool } = pkg
 
 const openDb = () => {

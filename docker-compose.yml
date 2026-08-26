@@ -31,7 +31,7 @@
 # Database: localhost:${DB_EXPOSED_PORT}
 #
 # Note: Docker Compose automatically loads .env file for variable substitution
-# Copy .env.docker to .env or create .env with required variables
+# Copy .env.example to .env or create .env with required variables
 
 services:
   # PostgreSQL Database
@@ -71,9 +71,9 @@ services:
     restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:${PORT}/api/health || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # Frontend
   frontend:
