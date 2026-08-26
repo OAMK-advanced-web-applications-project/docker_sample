@@ -12,7 +12,7 @@
 # Access the application at: http://localhost:5173
 
 # Use Node.js 22 as the base image
-FROM node:22
+FROM node:24
 
 # Set the working directory inside the container
 WORKDIR /app

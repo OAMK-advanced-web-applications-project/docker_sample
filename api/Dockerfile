@@ -12,10 +12,15 @@
 # Access the API at: http://localhost:3000
 
 # Use Node.js 22 as the base image
-FROM node:22
+FROM node:24
 
 # Set the working directory inside the container
 WORKDIR /app
+
+# curl is required by the Docker healthcheck
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy package.json and package-lock.json (if available)
 COPY package*.json ./   
@@ -30,4 +35,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the application using npm run devStart which starts it with nodemon
-CMD ["npm", "run", "devStart"]
+CMD ["npm", "run", "dev"]
