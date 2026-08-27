@@ -60,30 +60,68 @@ start Docker Desktop and wait until Docker is running.
 ```bash
 git clone https://github.com/OAMK-advanced-web-applications-project/docker_sample.git
 cd docker_sample
-git switch updated-docker
 ```
+
+The Docker version of the project is now in the `master` branch, so no branch switching is needed.
 
 ---
 
 ## Create `.env`
 
-The repository contains `.env.example`.
+The repository contains:
+
+```text
+.env.example
+```
 
 Create your own `.env` file from it.
 
-### Windows PowerShell
+### Option 1: File Explorer
+
+This may be easiest if you are not comfortable using the terminal.
+
+1. Open the project folder in File Explorer.
+2. Make a copy of `.env.example`.
+3. Rename the copy to:
+
+```text
+.env
+```
+
+Make sure the file is really named `.env` and not something like:
+
+```text
+.env.txt
+```
+
+### Option 2: Windows PowerShell
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-### Linux/macOS
+### Option 3: Windows Command Prompt
+
+```cmd
+copy .env.example .env
+```
+
+### Option 4: Linux/macOS
 
 ```bash
 cp .env.example .env
 ```
 
-Do not commit `.env` to Git.
+The project should now contain both:
+
+```text
+.env.example
+.env
+```
+
+`.env.example` is stored in Git as an example configuration.
+
+`.env` is your local configuration file and should **not** be committed to Git.
 
 ---
 
@@ -111,7 +149,7 @@ Health:   http://localhost:3000/api/health
 
 ## Check container status
 
-Open another terminal and run:
+Open another terminal in the project directory and run:
 
 ```bash
 docker compose ps
@@ -223,6 +261,8 @@ Check:
 docker version
 ```
 
+You should see both Client and Server information.
+
 ---
 
 ### A service does not start
@@ -231,6 +271,11 @@ Check:
 
 ```bash
 docker compose ps
+```
+
+Then inspect the logs:
+
+```bash
 docker compose logs
 ```
 
@@ -243,27 +288,98 @@ docker compose logs database
 
 ---
 
-### Port 5432 is already in use
+### PostgreSQL port 5432 is already in use
 
-Another PostgreSQL installation may already be using port 5432.
+If you already have PostgreSQL installed on your computer, it may already be using port `5432`.
 
-Change this in `.env`:
+Docker cannot use the same host port at the same time.
+
+You have two options.
+
+#### Option 1: Stop the local PostgreSQL service
+
+On Windows:
+
+1. Open the Start menu.
+2. Search for:
+
+```text
+Services
+```
+
+3. Open the **Services** application.
+4. Look for a PostgreSQL service, for example:
+
+```text
+postgresql-x64-17
+postgresql-x64-18
+```
+
+The exact name depends on the installed PostgreSQL version.
+
+5. Right-click the PostgreSQL service.
+6. Select **Stop**.
+
+After that, start the Docker application again:
+
+```bash
+docker compose up
+```
+
+You can start the local PostgreSQL service again later from the same Services application.
+
+#### Option 2: Use another host port
+
+Instead of stopping your locally installed PostgreSQL, change this in `.env`:
+
+```env
+DB_EXPOSED_PORT=5432
+```
+
+to:
 
 ```env
 DB_EXPOSED_PORT=5433
 ```
 
-Then pgAdmin should connect to:
+Then restart the Docker application:
+
+```bash
+docker compose down
+docker compose up
+```
+
+PostgreSQL inside Docker still listens on port:
+
+```text
+5432
+```
+
+but from your computer you now connect to:
 
 ```text
 localhost:5433
 ```
 
-The backend still uses:
+For example, pgAdmin would use:
+
+```text
+Host: localhost
+Port: 5433
+Database: mydb
+Username: postgres
+Password: root
+```
+
+The backend does **not** need to change.
+
+It still connects to:
 
 ```text
 database:5432
 ```
+
+because containers communicate using the internal Docker network.
 
 ---
 
@@ -278,7 +394,7 @@ docker compose down -v
 docker compose up
 ```
 
-Warning: this deletes existing database data.
+Warning: this deletes the existing Docker database data.
 
 ---
 
