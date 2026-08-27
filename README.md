@@ -57,12 +57,14 @@ start Docker Desktop and wait until Docker is running.
 
 ## Clone the project
 
+Clone the repository:
+
 ```bash
 git clone https://github.com/OAMK-advanced-web-applications-project/docker_sample.git
 cd docker_sample
 ```
 
-The Docker version of the project is now in the `master` branch, so no branch switching is needed.
+The Docker version of the project is in the `master` branch, so no branch switching is needed.
 
 ---
 
@@ -267,7 +269,7 @@ You should see both Client and Server information.
 
 ### A service does not start
 
-Check:
+Check the status of the services:
 
 ```bash
 docker compose ps
@@ -283,6 +285,11 @@ For example:
 
 ```bash
 docker compose logs backend
+```
+
+or:
+
+```bash
 docker compose logs database
 ```
 
@@ -294,19 +301,12 @@ If you already have PostgreSQL installed on your computer, it may already be usi
 
 Docker cannot use the same host port at the same time.
 
-You have two options.
+You have three options.
 
-#### Option 1: Stop the local PostgreSQL service
-
-On Windows:
+#### Option 1: Stop PostgreSQL using Windows Services
 
 1. Open the Start menu.
-2. Search for:
-
-```text
-Services
-```
-
+2. Search for **Services**.
 3. Open the **Services** application.
 4. Look for a PostgreSQL service, for example:
 
@@ -326,9 +326,55 @@ After that, start the Docker application again:
 docker compose up
 ```
 
-You can start the local PostgreSQL service again later from the same Services application.
+You can start your local PostgreSQL service again later from the same Services application.
 
-#### Option 2: Use another host port
+#### Option 2: Stop PostgreSQL from the terminal
+
+First, find the PostgreSQL service name.
+
+In PowerShell:
+
+```powershell
+Get-Service *postgres*
+```
+
+You should see something similar to:
+
+```text
+Status   Name                DisplayName
+------   ----                -----------
+Running  postgresql-x64-18   postgresql-x64-18
+```
+
+Then stop the service:
+
+```powershell
+Stop-Service postgresql-x64-18
+```
+
+Replace `postgresql-x64-18` with the actual service name shown on your computer.
+
+If PowerShell reports a permission error, open **PowerShell as Administrator** and try again.
+
+You can start PostgreSQL again later with:
+
+```powershell
+Start-Service postgresql-x64-18
+```
+
+Alternatively, from an **Administrator Command Prompt** you can use:
+
+```cmd
+net stop postgresql-x64-18
+```
+
+and start it again with:
+
+```cmd
+net start postgresql-x64-18
+```
+
+#### Option 3: Use another host port
 
 Instead of stopping your locally installed PostgreSQL, change this in `.env`:
 
@@ -379,7 +425,7 @@ It still connects to:
 database:5432
 ```
 
-because containers communicate using the internal Docker network.
+because the containers communicate through Docker's internal network.
 
 ---
 
@@ -394,7 +440,7 @@ docker compose down -v
 docker compose up
 ```
 
-Warning: this deletes the existing Docker database data.
+**Warning:** this deletes the existing Docker database data.
 
 ---
 
