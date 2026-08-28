@@ -55,16 +55,89 @@ start Docker Desktop and wait until Docker is running.
 
 ---
 
-## Clone the project
+## Get the project
 
-Clone the repository:
+If you only want to try the Docker example, you can clone the repository normally:
 
 ```bash
 git clone https://github.com/OAMK-advanced-web-applications-project/docker_sample.git
 cd docker_sample
 ```
 
-The Docker version of the project is in the `master` branch, so no branch switching is needed.
+### Using the example as a starting point for your own project
+
+If you use this example as the starting point for your **own course project**, you should create your own Git repository.
+
+If you simply clone this repository, Git still remembers the original repository as its remote (`origin`). Instead, clone the example, remove its Git history, and initialize a new repository for your own project.
+
+First clone the example:
+
+```bash
+git clone https://github.com/OAMK-advanced-web-applications-project/docker_sample.git
+cd docker_sample
+```
+
+You can also rename the project directory to match your own project.
+
+Then remove the existing `.git` directory.
+
+### Windows PowerShell
+
+```powershell
+Remove-Item -Recurse -Force .git
+```
+
+### Windows Command Prompt
+
+```cmd
+rmdir /s /q .git
+```
+
+### Linux/macOS
+
+```bash
+rm -rf .git
+```
+
+> **Be careful:** make sure you are inside the correct project directory before removing `.git`.
+
+The project files are still there, but the connection to the original Git repository and its Git history have now been removed.
+
+Initialize a new Git repository:
+
+```bash
+git init
+git add .
+git commit -m "Initial project"
+```
+
+Create a new empty repository for your project on GitHub.
+
+Then connect your local project to your new GitHub repository:
+
+```bash
+git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git branch -M main
+git push -u origin main
+```
+
+Replace `YOUR_USERNAME` and `YOUR_REPOSITORY` with your own GitHub username and repository name.
+
+You can verify the configured remote with:
+
+```bash
+git remote -v
+```
+
+It should now show **your own repository**, not the original `docker_sample` repository.
+
+### Alternative: fork the repository
+
+Another possibility is to **fork** this repository on GitHub and then clone your fork.
+
+A fork keeps the Git history and the relationship to the original repository. This can be useful when you want to continue following changes made to the original project.
+
+For this course project, creating a fresh Git repository using the instructions above is usually simpler.
 
 ---
 
