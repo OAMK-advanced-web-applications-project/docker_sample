@@ -1,6 +1,6 @@
 import { getAllTests } from '../models/Test.js'
 
-const getTest = async (req, res, next) => {
+const getTests = async (req, res, next) => {
   try {
     const result = await getAllTests()
     res.status(200).json(result.rows || [])
@@ -10,5 +10,5 @@ const getTest = async (req, res, next) => {
 }
 
 export {
-  getTest
+  getTests
 }
