@@ -33,9 +33,9 @@ function App() {
         
         {data && (
           <div style={{ marginTop: '20px', padding: '10px', background: '#f0f0f0' }}>
-            <h3>Data fromBackend:</h3>
+            <h3>Data from Backend:</h3>
             <ul style={{ textAlign: 'left', margin: '10px 0' }}>
-              {data && data.map((item) => (
+              { data.map((item) => (
                 <li key={item.id} style={{ marginBottom: '10px' }}>
                   {`ID: ${item.id} - ${item.description}`}
                 </li>
