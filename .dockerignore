@@ -1,2 +1,6 @@
 node_modules
-.env
+.ennode_modules
+**/node_modules
+
+.git
+.gitignore
