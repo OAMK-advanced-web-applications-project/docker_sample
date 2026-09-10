@@ -53,13 +53,14 @@ services:
 
   # Backend API
   backend:
-    build: ./api
+    build: .
+    command: npm run dev:api
     env_file:
       - .env
     ports:
       - "${BACKEND_EXPOSED_PORT}:${PORT}"
     volumes:
-      - ./api:/app
+      - .:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
@@ -78,6 +79,7 @@ services:
   # Frontend
   frontend:
     build: .
+    command: npm run dev:web
     env_file:
       - .env
     ports:
@@ -87,6 +89,7 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=development
+      - API_PROXY_TARGET=http://backend:3000
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
     depends_on:

@@ -12,7 +12,8 @@ function App() {
     setError(null)
     
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/`)
+      //const response = await axios.get(`${import.meta.env.VITE_API_URL}/`)
+      const response = await axios.get('/api/tests')
       setData(response.data)
     } catch (err) {
       setError(err.message)
