@@ -2,7 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import errorHandler from './middleware/errorHandler.js'
-import testRouter from './routes/testRouter.js'
+import userRouter from './routes/userRouter.js'
 
 const port = process.env.PORT || 3000
 
@@ -12,7 +12,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/', testRouter)
+app.use('/api/user', userRouter)
 
 // Health check endpoint for database connectivity
 app.get('/api/health', async (req, res) => {
