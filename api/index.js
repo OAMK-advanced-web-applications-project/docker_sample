@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import errorHandler from './middleware/errorHandler.js'
+import userRouter from './routes/userRouter.js'
 import testRouter from './routes/testRouter.js'
 import movieRouter from './routes/movieRouter.js'
 
@@ -13,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+app.use('/api/user', userRouter)
 app.use('/', testRouter)
 app.use('/api/movies', movieRouter)
 
