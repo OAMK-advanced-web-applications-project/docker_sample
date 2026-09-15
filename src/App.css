@@ -45,42 +45,6 @@ h1 {
     margin-bottom: 2rem;
 }
 
-/* Elokuvien grid */
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
-}
-
-/* Yksittäinen elokuvakortti */
-.movie-card {
-    background: #f5f5f5;
-    border-radius: 8px;
-    overflow: hidden;
-    padding-bottom: 1rem;
-}
-
-/* Elokuvan juliste */
-.movie-poster {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    display: block;
-}
-
-/* Elokuvan nimi */
-.movie-card h2 {
-    font-size: 1.1rem;
-    margin: 1rem 1rem 0.5rem;
-}
-
-/* Elokuvan kuvaus */
-.movie-card p {
-    margin: 0 1rem;
-    font-size: 0.9rem;
-    line-height: 1.4;
-}
-
 .menu-container {
 	display: grid;
 	grid-template-rows: auto 1fr;
