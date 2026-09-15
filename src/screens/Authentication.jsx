@@ -9,6 +9,13 @@ export const AuthenticationMode = Object.freeze({
  
 export default function Authentication({authenticationMode}) { 
   const { user, setUser,signUp, signIn } = useUser() 
+
+  if (user && user.token) {
+    return (
+      <h3>You are already signed in.</h3> 
+    ) 
+  }
+
   const navigate = useNavigate() 
  
   const handleSubmit = (e) => { 
