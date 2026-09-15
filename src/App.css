@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .logo {
@@ -43,4 +43,19 @@
 h1 {
     text-align: center;
     margin-bottom: 2rem;
+}
+
+.menu-container {
+	display: grid;
+	grid-template-rows: auto 1fr;
+}
+
+.menu {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.menu button {
+	margin: 2px;
 }
