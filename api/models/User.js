@@ -8,5 +8,12 @@ const getUserByEmail = async (email) => {
   return result
 }
 
+const deleteUser = async (userId) => {
+  const result = await pool.query(
+    'DELETE FROM app_users WHERE "userID" = $1 RETURNING *', [userId]
+  )
+  return result.rows[0]
+}
 
-export { getUserByEmail }
+
+export { getUserByEmail, deleteUser }

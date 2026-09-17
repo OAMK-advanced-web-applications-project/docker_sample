@@ -1,7 +1,7 @@
 import { ApiError } from '../helper/ApiError.js' 
 import { compare, hash } from 'bcrypt' 
 import jwt from 'jsonwebtoken' 
-import { getUserByEmail } from '../models/User.js'
+import { getUserByEmail, deleteUser } from '../models/User.js'
 
 const { sign } = jwt 
  
@@ -35,5 +35,20 @@ const signin = async (req, res,next) => {
     return next(error) 
   } 
 } 
+
+const deleteAccount = async (req, res) => {
+
+  const userId = req.user.userId
+
+  const deletedUser = await deleteUser(userId)
+
+  if (!deletedUser) {
+    throw new ApiError('User not found', 404)
+  }
+
+  return res.status(200).json({
+    message: 'User deleted successfully'
+  })
+}
  
-export { signin } 
+export { signin, deleteAccount } 
